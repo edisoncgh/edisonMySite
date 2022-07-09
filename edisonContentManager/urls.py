@@ -13,9 +13,21 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+# 全局路由
+# 配置页面跳转信息
 from django.contrib import admin
-from django.urls import path
+from django.template.context_processors import static
+from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
+
+from blog import views
 
 urlpatterns = [
+    # 配置管理页面路由
     path('admin/', admin.site.urls),
+    # 配置博客子系统路由
+    path('blog/', include('blog.urls')),
+    # 配置默认路由
+    path('', views.index_unlog, name='index_unlog'),
 ]
