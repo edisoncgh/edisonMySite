@@ -2,6 +2,7 @@
 # 对应数据库
 from django.db import models
 import datetime
+from django.contrib import admin
 
 # Create your models here.
 
@@ -17,7 +18,7 @@ class User(models.Model):
     comment_num = models.PositiveIntegerField(
         verbose_name='评论数', default=0)  # 评论数
     avatar = models.ImageField(
-        upload_to='media', default="media/default.png")  # 用户头像
+        upload_to='media', default="media/default.jpg")  # 用户头像
 
     def __str__(self):
         return self.username
@@ -36,5 +37,5 @@ class User(models.Model):
         db_table = "blog_user"  # 数据库表名
 
 
-# class UserAdmin(admin.ModelAdmin):
-#     list_display = ('username', 'email')
+class UserAdmin(admin.ModelAdmin):
+    list_display = ('username', 'email')

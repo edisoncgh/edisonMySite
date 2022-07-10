@@ -8,6 +8,10 @@ from django.shortcuts import render
 # 主页(未登录)
 
 
+def start_page(request):
+    return render(request, 'start_page.html')
+
+
 def index_unlog(request):
     return render(request, 'index_unlog.html')
 

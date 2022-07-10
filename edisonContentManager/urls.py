@@ -24,11 +24,10 @@ from django.conf.urls.static import static
 from blog import views
 
 urlpatterns = [
+    # 配置缺省页面
+    path('', views.start_page, name='start_page.html'),
     # 配置管理页面路由
     path('admin/', admin.site.urls),
     # 配置博客子系统路由
     path('blog/', include('blog.urls')),
-    # 配置默认路由
-    path('', views.index_unlog, name='index_unlog'),
-    path('login', views.login, name='login'),
 ]
