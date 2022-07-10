@@ -30,4 +30,5 @@ urlpatterns = [
     path('blog/', include('blog.urls')),
     # 配置默认路由
     path('', views.index_unlog, name='index_unlog'),
+    path('login', views.login, name='login'),
 ]

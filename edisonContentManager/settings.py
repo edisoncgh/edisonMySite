@@ -60,6 +60,7 @@ TEMPLATES = [
         'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
+            # 上下文处理器
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
