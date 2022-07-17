@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+    {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -9,10 +10,24 @@
 </head>
 
 <body>
-    个人博客系统测试
-    <p>
-        <a href="{% url 'login' %}">转到登录</a>
-    </p>
+    <center>
+        个人博客系统测试
+        <p>
+            <a href="{% url 'blog:login' %}">转到登录</a>
+        </p>
+
+        <!-- 文章列表 -->
+        {% if article_list %}
+        <ul>
+            <!-- 单个文章标题 -->
+            {% for article in article_list %}
+            <li><a href="{% url 'blog:content' article.article_id %}">{{ article.title }}</a></li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>No articles are available.</p>
+        {% endif %}
+    </center>
 </body>
 
 </html>
