@@ -144,8 +144,8 @@ class Comment(models.Model):
             return str(self.comment_id)
         else:
             return "empty"
-
     # 模型元数据选项
+
     class Meta:
         db_table = "comments"  # 数据库表名
         ordering = ['-comment_date']  # 按发布日志降序排序
