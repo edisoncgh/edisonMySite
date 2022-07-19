@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'simpleui',   # 添加后台模板，一定要加在admin前
     'django.contrib.admin',  # 管理员面板
     'django.contrib.auth',  # 认证授权系统
     'django.contrib.contenttypes',  # 内容类型框架
@@ -114,9 +115,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
 # LANGUAGE_CODE = 'en-us'
-LANGUAGE_CODE = 'zh-hans'
+LANGUAGE_CODE = 'zh-Hans'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Shanghai'
 
 USE_I18N = True
 
@@ -155,3 +156,13 @@ TEMPLATES = [
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# simpleui 配置项
+# Icon配置
+SIMPLEUI_ICON = {
+    '所有文章': 'el-icon-document',
+    '所有类别': 'el-icon-collection-tag',
+    '所有友链': 'el-icon-link',
+}
+# 显示服务器信息
+SIMPLEUI_HOME_INFO = True

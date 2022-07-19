@@ -21,16 +21,13 @@ class User(models.Model):
     avatar = models.ImageField(
         upload_to='media', default="media/default.jpg")  # 用户头像
 
-    @classmethod
     def __str__(self):
         return self.username
 
-    @classmethod
     def comment(self):
         self.comment_num += 1
         self.save(update_fields=['comment_num'])
 
-    @classmethod
     def comment_del(self):
         self.comment_num -= 1
         self.save(update_fields=['comment_num'])
@@ -49,14 +46,12 @@ class UserAdmin(admin.ModelAdmin):
 
 
 class Category(models.Model):
-    # article = models.ForeignKey(Article, on_delete=models.CASCADE)  # 外键，指向所属文章
     cat_id = models.AutoField(verbose_name='类别id', primary_key=True)  # 主键，自增
     cat_name = models.CharField(
         verbose_name='类别名称', max_length=20, null=False)
     add_date = models.DateTimeField(
         verbose_name='添加日期', default=timezone.now)
 
-    @classmethod
     # 使对象在后台显示更友好
     def __str__(self):
         if self.cat_name:
@@ -67,6 +62,8 @@ class Category(models.Model):
     # 模型元数据选项
     class Meta:
         db_table = "categories"  # 数据库表名
+        verbose_name = '类别'  # 指定后台显示模型名称
+        verbose_name_plural = '所有类别'  # 指定后台显示模型复数名称
 
 # ---------------------------文章表---------------------------
 
@@ -77,11 +74,9 @@ class Article(models.Model):
         ('p', '已发表'),
     )
     category = models.ForeignKey(
-        Category, on_delete=models.CASCADE, null=True)  # 外键，指向所属类别
-    article_id = models.AutoField(
+        Category, on_delete=models.CASCADE, null=True)  # 外键，指向所属分类
+    article_id = models.IntegerField(
         verbose_name='文章ID', primary_key=True)  # 主键，自增
-    article_cat = models.CharField(
-        verbose_name='文章分类', max_length=20)
     title = models.CharField(verbose_name='标题', max_length=50)
     content = MDTextField(verbose_name='正文', blank=True, null=True)
     publish_date = models.DateTimeField(
@@ -91,23 +86,22 @@ class Article(models.Model):
     visit_num = models.PositiveIntegerField(verbose_name='浏览数', default=0)
 
     # 使对象在后台显示更友好
-    @classmethod
     def __str__(self):
-        return self.title
+        if self.title:
+            return self.title
+        else:
+            return 'empty'
 
     # 更新浏览量
-    @classmethod
     def visited(self):
         self.visit_num += 1
         self.save(update_fields=['visit_num'])
 
     # 下一篇
-    @classmethod
     def next_article(self):  # id比当前id大，状态为已发布，发布时间不为空
         return Article.objects.filter(id__gt=self.article_id, status='p', pub_time__isnull=False).first()
 
     # 前一篇
-    @classmethod
     def prev_article(self):  # id比当前id小，状态为已发布，发布时间不为空
         return Article.objects.filter(id__lt=self.article_id, status='p', pub_time__isnull=False).first()
 
@@ -115,16 +109,20 @@ class Article(models.Model):
     class Meta:
         db_table = "articles"  # 数据库表名
         ordering = ['-publish_date']  # 按发布日志降序排序
+        verbose_name = '文章'  # 指定后台显示模型名称
+        verbose_name_plural = '所有文章'  # 指定后台显示模型复数名称
+
 
 # ---------------------------评论表---------------------------
 
 
 class Comment(models.Model):
     STATUS_CHOICES = (
-        ('f', '待通过'),
-        ('t', '已通过'),
+        ('d', '未通过'),
+        ('p', '已通过'),
     )
-    article = models.ForeignKey(Article, on_delete=models.CASCADE)  # 外键，指向所属文章
+    article = models.ForeignKey(
+        Article, on_delete=models.CASCADE, null=False)  # 外键，指向所属文章
     comment_id = models.AutoField(
         verbose_name='评论ID', primary_key=True)  # 主键，自增
     author = models.CharField(
@@ -135,20 +133,21 @@ class Comment(models.Model):
         verbose_name='作者链接', default='', null=True)
     comment_date = models.DateTimeField(
         verbose_name='评论日期', default=timezone.now)
-    content = models.TextField(verbose_name='评论正文', blank=True, null=True)
+    content = MDTextField(verbose_name='评论正文', null=True)  # markdown内容
 
-    @classmethod
-    # 使对象在后台显示更友好
     def __str__(self):
-        if self.comment_id:
-            return str(self.comment_id)
+        if self.author:
+            return self.author
         else:
-            return "empty"
-    # 模型元数据选项
+            return "empty field"
 
     class Meta:
         db_table = "comments"  # 数据库表名
         ordering = ['-comment_date']  # 按发布日志降序排序
+        verbose_name = '评论'  # 指定后台显示模型名称
+        verbose_name_plural = '所有评论'  # 指定后台显示模型复数名称
+
+
 # ---------------------------友链表---------------------------
 
 
@@ -162,17 +161,19 @@ class Friendlink(models.Model):
     link_name = models.CharField(
         verbose_name='友链名称', max_length=20)
     # 图片会被上传至MEDIA_ROOT / uploads
+    # MEDIA_ROOT = BASE_DIR / blog / static / media
     link_avatar = models.ImageField(
-        verbose_name='友链头像', upload_to='uploads', default="media/default.jpg")
+        verbose_name='友链头像', upload_to='media/uploads/', default="media/default.jpg")
 
-    @classmethod
     # 使对象在后台显示更友好
     def __str__(self):
-        if self.link_id:
-            return str(self.link_id)
+        if self.link_name:
+            return self.link_name
         else:
             return 'empty'
 
     # 模型元数据选项
     class Meta:
         db_table = "friendlinks"  # 数据库表名
+        verbose_name = '友链'  # 指定后台显示模型名称
+        verbose_name_plural = '所有友链'  # 指定后台显示模型复数名称

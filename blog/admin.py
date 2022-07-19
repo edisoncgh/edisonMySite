@@ -6,7 +6,7 @@ from .models import Article, Category, Comment, Friendlink
 
 
 class ArticleAdmin(admin.ModelAdmin):  # 文章管理面板
-    fields = ['title', 'content', 'article_cat']
+    fields = ['title', 'content', 'category']
     # 后台展示方式
     list_display = ('title', 'publish_date', 'visit_num',
                     'comment_num', 'like_num')
@@ -20,12 +20,12 @@ admin.site.register(Article, ArticleAdmin)
 
 
 class CommentAdmin(admin.ModelAdmin):  # 评论管理面板
-    fields = ['article', 'comment_date',
-              'author', 'author_email', 'author_link', 'content']
+    # 表单
+    fields = ['article', 'author', 'author_email', 'author_link', 'content']
     # 按评论人、文章筛选
     list_filter = ['article', 'author']
     # 展示形式
-    list_display = ('article', 'comment_date', 'content')
+    list_display = ('article', 'comment_date', 'author', 'content')
     # 按评论内容搜索的搜索框
     search_fields = ['content']
 
