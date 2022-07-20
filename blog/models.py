@@ -69,11 +69,6 @@ class Category(models.Model):
 
 
 class Article(models.Model):
-    STATUS_CHOICES = (
-        ('d', '草稿'),
-        ('p', '已发表'),
-    )
-
     SMALL_TALK = 'sm'
     BLOG_ARTICLE = 'lg'
     CONTENT_TYPE_CHOICE = (
@@ -111,13 +106,18 @@ class Article(models.Model):
         self.visit_num += 1
         self.save(update_fields=['visit_num'])
 
+    # 更新点赞
+    def liked(self):
+        self.like_num += 1
+        self.save(update_fields=['like_num'])
+
     # 下一篇
     def next_article(self):  # id比当前id大，状态为已发布，发布时间不为空
-        return Article.objects.filter(id__gt=self.article_id, status='p', pub_time__isnull=False).first()
+        return Article.objects.filter(id__gt=self.article_id, pub_time__isnull=False).first()
 
     # 前一篇
     def prev_article(self):  # id比当前id小，状态为已发布，发布时间不为空
-        return Article.objects.filter(id__lt=self.article_id, status='p', pub_time__isnull=False).first()
+        return Article.objects.filter(id__lt=self.article_id, pub_time__isnull=False).first()
 
     # 模型元数据选项
     class Meta:

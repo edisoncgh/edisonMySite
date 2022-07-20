@@ -16,6 +16,31 @@
     <p>
         {{article.content}}
     </p>
+
+    <!-- 上下翻页 -->
+    {% if prevpost %}
+    <a class="btn" href="{% url 'blog:content' prevpost.article_id %}"
+        style="text-decoration: none; float: left;font-size: 20px;">
+        上一篇：{{ prevpost.title }}
+    </a>
+    {% endif %}
+    {% if nextpost %}
+    <a class="btn" href="{% url 'blog:content' nextpost.article_id %}"
+        style="text-decoration: none; float: right;font-size: 20px;">
+        下一篇：{{ nextpost.title }}
+    </a>
+    {% endif %}
+
+    <!-- 评论区 -->
+    {% if comments %}
+    <ul>
+        {% for comment in comments %}
+        <li>{{ comment.author }} 说 {{ comment.content }}</li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>文章暂时没有评论</p>
+    {% endif %}
 </body>
 
 </html>
