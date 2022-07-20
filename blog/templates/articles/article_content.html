@@ -5,6 +5,9 @@
     {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <link href="{% static 'mdeditor/css/editormd.min.css' %}" rel="stylesheet">
+    <link href="{% static 'mdeditor/css/editormd.preview.css' %}" rel="stylesheet">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>文章详情页</title>
 </head>
@@ -13,9 +16,39 @@
     <center>
         <h1>{{ article.title }}</h1>
     </center>
-    <p>
+    <!-- <p>
         {{article.content}}
-    </p>
+    </p> -->
+
+    <div id="content"><textarea>{{article.content}}</textarea></div>
+
+    <script src="{% static 'mdeditor/js/jquery.min.js' %}"></script>
+    <script src="{% static 'mdeditor/js/editormd.min.js' %}"></script>
+    <script src="{% static 'mdeditor/js/lib/marked.min.js' %}"></script>
+    <script src="{% static 'mdeditor/js/lib/prettify.min.js' %}"></script>
+    <script src="{% static 'mdeditor/js/lib/raphael.min.js' %}"></script>
+    <script src="{% static 'mdeditor/js/lib/underscore.min.js' %}"></script>
+    <script src="{% static 'mdeditor/js/lib/sequence-diagram.min.js' %}"></script>
+    <script src="{% static 'mdeditor/js/lib/flowchart.min.js' %}"></script>
+    <script src="{% static 'mdeditor/js/lib/jquery.flowchart.min.js' %}"></script>
+
+    <script>
+        $(function () {
+            // js 解析markdown
+            editormd.markdownToHTML("content", {
+                emoji: true,
+                taskList: true,
+                tex: true,  // 默认不解析
+                flowChart: true,  // 默认不解析
+                sequenceDiagram: true,  // 默认不解析
+            });
+
+            $(".reference-link").each(function (i, obj) {
+                console.log(obj)
+            })
+        })
+
+    </script>
 
     <!-- 上下翻页 -->
     {% if prevpost %}
