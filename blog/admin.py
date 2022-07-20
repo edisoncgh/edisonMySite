@@ -6,9 +6,9 @@ from .models import Article, Category, Comment, Friendlink
 
 
 class ArticleAdmin(admin.ModelAdmin):  # 文章管理面板
-    fields = ['title', 'content', 'category']
+    fields = ['content_type', 'title', 'content', 'category']
     # 后台展示方式
-    list_display = ('title', 'publish_date', 'visit_num',
+    list_display = ('content_type', 'title', 'publish_date', 'category', 'visit_num',
                     'comment_num', 'like_num')
     # 按日期筛选
     list_filter = ['publish_date']

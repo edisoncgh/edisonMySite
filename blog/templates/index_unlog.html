@@ -21,7 +21,14 @@
         <ul>
             <!-- 单个文章标题 -->
             {% for article in article_list %}
+            {% if article.content_type == 'lg' %}
             <li><a href="{% url 'blog:content' article.article_id %}">{{ article.title }}</a></li>
+            {% else %}
+            <li>
+                <h4>{{article.title}}</h4>
+                <p>{{article.content}}</p>
+            </li>
+            {% endif %}
             {% endfor %}
         </ul>
         {% else %}

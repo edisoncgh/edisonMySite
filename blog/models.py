@@ -73,11 +73,25 @@ class Article(models.Model):
         ('d', '草稿'),
         ('p', '已发表'),
     )
+
+    SMALL_TALK = 'sm'
+    BLOG_ARTICLE = 'lg'
+    CONTENT_TYPE_CHOICE = (
+        (SMALL_TALK, '说说'),
+        (BLOG_ARTICLE, '博文')
+    )
+
+    content_type = models.CharField(
+        max_length=5,
+        choices=CONTENT_TYPE_CHOICE,
+        default=BLOG_ARTICLE,
+        verbose_name='内容类型'
+    )  # 内容类型，默认为博文
     category = models.ForeignKey(
-        Category, on_delete=models.CASCADE, null=True)  # 外键，指向所属分类
+        Category, on_delete=models.CASCADE, verbose_name='文章分类', null=True, blank=True)  # 外键，指向所属分类
     article_id = models.IntegerField(
         verbose_name='文章ID', primary_key=True)  # 主键，自增
-    title = models.CharField(verbose_name='标题', max_length=50)
+    title = models.CharField(verbose_name='标题', max_length=50, default='无题')
     content = MDTextField(verbose_name='正文', blank=True, null=True)
     publish_date = models.DateTimeField(
         verbose_name='发布日期', default=timezone.now)
