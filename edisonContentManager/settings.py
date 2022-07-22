@@ -174,8 +174,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.126.com'  # SMTP服务器地址
 EMAIL_PORT = 25
 # 发送邮件的邮箱
-EMAIL_HOST_USER = 'cferku@126.com'
+EMAIL_HOST_USER = ''
 # 在邮箱中设置的客户端授权密码
-EMAIL_HOST_PASSWORD = 'WCWNWYRPFWQEREPK'
+EMAIL_HOST_PASSWORD = ''
 # 收件人看到的发件人
 EMAIL_FROM = 'edisoncgh<cgh@edisoncgh.com>'
