@@ -14,4 +14,7 @@ urlpatterns = [
     # 文章详情页路由
     # ex: blog/1/
     path('<int:article_id>/', views.article_content, name='content'),
+    # 评论表单推送路由
+    # ex: blog/commentpost?nickname=xxx
+    path('submit_comment', views.submit_comment, name='submit_comment'),
 ]

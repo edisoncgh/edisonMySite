@@ -21,9 +21,10 @@ admin.site.register(Article, ArticleAdmin)
 
 class CommentAdmin(admin.ModelAdmin):  # 评论管理面板
     # 表单
-    fields = ['article', 'author', 'author_email', 'author_link', 'content']
+    fields = ['article', 'author', 'status',
+              'author_email', 'author_link', 'content']
     # 按评论人、文章筛选
-    list_filter = ['article', 'author']
+    list_filter = ['article', 'author', 'status']
     # 展示形式
     list_display = ('article', 'comment_date', 'author', 'content')
     # 按评论内容搜索的搜索框

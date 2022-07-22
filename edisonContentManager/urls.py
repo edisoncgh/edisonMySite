@@ -30,4 +30,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # 配置博客子系统路由
     path('blog/', include('blog.urls')),
+    # 验证码生成器
+    path('captcha/', include('captcha.urls')),
 ]

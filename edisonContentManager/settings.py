@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',  # 静态文件管理框架
     'blog.apps.BlogConfig',  # 注册博客子系统
     'mdeditor',  # markdown支持
+    'captcha',  # 验证码支持
 ]
 
 # markdown图片上传
@@ -166,3 +167,15 @@ SIMPLEUI_ICON = {
 }
 # 显示服务器信息
 SIMPLEUI_HOME_INFO = True
+
+# 邮件推送设置
+ADMIN_EMAIL = 'cgh@edisoncgh.com'  # 博主email
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.126.com'  # SMTP服务器地址
+EMAIL_PORT = 25
+# 发送邮件的邮箱
+EMAIL_HOST_USER = 'cferku@126.com'
+# 在邮箱中设置的客户端授权密码
+EMAIL_HOST_PASSWORD = 'WCWNWYRPFWQEREPK'
+# 收件人看到的发件人
+EMAIL_FROM = 'edisoncgh<cgh@edisoncgh.com>'

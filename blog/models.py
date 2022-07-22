@@ -89,10 +89,13 @@ class Article(models.Model):
     title = models.CharField(verbose_name='标题', max_length=50, default='无题')
     content = MDTextField(verbose_name='正文', blank=True, null=True)
     publish_date = models.DateTimeField(
-        verbose_name='发布日期', default=timezone.now)
-    comment_num = models.PositiveIntegerField(verbose_name='评论数', default=0)
-    like_num = models.PositiveIntegerField(verbose_name='点赞数', default=0)
-    visit_num = models.PositiveIntegerField(verbose_name='浏览数', default=0)
+        verbose_name='发布日期', default=timezone.now, editable=False)
+    comment_num = models.PositiveIntegerField(
+        verbose_name='评论数', default=0, editable=False)
+    like_num = models.PositiveIntegerField(
+        verbose_name='点赞数', default=0, editable=False)
+    visit_num = models.PositiveIntegerField(
+        verbose_name='浏览数', default=0, editable=False)
 
     # 使对象在后台显示更友好
     def __str__(self):
@@ -131,10 +134,19 @@ class Article(models.Model):
 
 
 class Comment(models.Model):
+    PERMIT = 'per'
+    NOT_PERMIT = 'npr'
     STATUS_CHOICES = (
-        ('d', '未通过'),
-        ('p', '已通过'),
+        (PERMIT, '已通过'),
+        (NOT_PERMIT, '未通过'),
     )
+
+    status = models.CharField(
+        max_length=5,
+        choices=STATUS_CHOICES,
+        default=NOT_PERMIT,
+        verbose_name='评论状态'
+    )  # 评论状态，默认不过审
     article = models.ForeignKey(
         Article, on_delete=models.CASCADE, null=False)  # 外键，指向所属文章
     comment_id = models.AutoField(
@@ -144,7 +156,7 @@ class Comment(models.Model):
     author_email = models.EmailField(
         verbose_name='作者邮箱')
     author_link = models.URLField(
-        verbose_name='作者链接', default='', null=True)
+        verbose_name='作者链接', default='', null=True, blank=True)
     comment_date = models.DateTimeField(
         verbose_name='评论日期', default=timezone.now)
     content = MDTextField(verbose_name='评论正文', null=True)  # markdown内容
@@ -161,7 +173,35 @@ class Comment(models.Model):
         verbose_name = '评论'  # 指定后台显示模型名称
         verbose_name_plural = '所有评论'  # 指定后台显示模型复数名称
 
+# ---------------------------楼中楼---------------------------
 
+
+class Subcomment(models.Model):
+    father = models.ForeignKey(
+        Comment, on_delete=models.CASCADE, null=False)  # 父评论
+    id = models.AutoField(
+        verbose_name='子评论ID', primary_key=True)  # 主键，自增
+    author = models.CharField(
+        verbose_name='子评论作者', max_length=20)
+    author_email = models.EmailField(
+        verbose_name='作者邮箱')
+    author_link = models.URLField(
+        verbose_name='作者链接', default='', null=True, blank=True)
+    comment_date = models.DateTimeField(
+        verbose_name='评论日期', default=timezone.now)
+    content = MDTextField(verbose_name='子评论正文', null=True)  # markdown内容
+
+    def __str__(self):
+        if self.author:
+            return self.author
+        else:
+            return "empty field"
+
+    class Meta:
+        db_table = "subcomments"  # 数据库表名
+        ordering = ['-comment_date']  # 按发布日志降序排序
+        verbose_name = '子评论'  # 指定后台显示模型名称
+        verbose_name_plural = '所有子评论'  # 指定后台显示模型复数名称
 # ---------------------------友链表---------------------------
 
 
