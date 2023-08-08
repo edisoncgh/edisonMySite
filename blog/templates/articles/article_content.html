@@ -11,6 +11,16 @@
     <!-- OwO评论区表情 -->
     <link rel="stylesheet" href="{%static 'plugins/OwO/OwO.min.css'%}">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+        integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <!-- bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-7ymO4nGrkm372HoSbq1OY2DP4pEZnMiA+E0F3zPr+JQQtQ82gQ1HPY3QIVtztVua"
+        crossorigin="anonymous"></script>
     <title>文章详情页</title>
 </head>
 
@@ -78,23 +88,27 @@
         <input type="submit" value="Submit">
     </form> -->
 
-    <form id="" method="post" enctype="multipart/form-data">
+    <form id="" method="post" enctype="multipart/form-data" action="{% url 'blog:submit_comment' %}">
         {% csrf_token %}
-        <input type="text" id="nickname" />
-        <input type="text" id="author_email" />
-        <input type="text" id="author_link" />
-        <div class="OwO-textarea">
+        <p>昵称<input type="text" name="nickname" id="nickname" /></p>
+        <p>邮箱<input type="text" name="author_email" id="author_email" /></p>
+        <p>链接<input type="text" name="author_link" id="author_link" /></p>
+        <textarea id="comment_content" name="comment_content" placeholder="在此输入评论内容"></textarea>
+        <!-- <div class="OwO-textarea">
             <textarea class="OwO OwO-textarea" id='comment_content'></textarea>
-        </div>
+        </div> -->
         <!-- OwO表情 -->
-        <div class="OwO"></div>
-        <input type="text" id="article_id" value="{{article.article_id}}" style="display:none">
+        <!-- <div class="OwO"></div> -->
+        <input type="text" id="article_id" name="article_id" value="{{article.article_id}}" style="display:none">
         <a type="text" id="postaddress" href="{% url 'blog:submit_comment' %}" style="display: none"></a>
-        <button onclick="submit_comment()">提交评论</button>
+        <button type="submit" class="btn btn-primary" data-toggle="button" aria-pressed="false"
+            onclick="submit_comment()">
+            提交评论
+        </button>
     </form>
 
     <!-- OwO表情 -->
-    <script>
+    <!-- <script>
         var OwO_demo = new OwO({
             logo: 'OωO表情',
             container: document.getElementsByClassName('OwO')[0],
@@ -105,18 +119,21 @@
             maxHeight: '250px'
         });
     </script>
-    <script src="{%static 'plugins/OwO/OwO.min.js'%}"></script>
+    <script src="{%static 'plugins/OwO/OwO.min.js'%}"></script> -->
 
     <!-- ajax交互，提交评论 -->
-    <script>
+    <!-- <script>
         function submit_comment() {
             var comment_content = document.getElementById("comment").value;
             var article_id = document.getElementById("article_id").value;
             var postaddress = $("#postaddress").attr('href');
+            console.log("1234")
+            console.log(comment_content)
+            print
             $.ajax({
                 url: postaddress,     //请求url地址
                 type: "POST",
-                data: { "id": id, "comment": comment },       //发送post请求携带的数据信息
+                data: { "id": id, "comment": comment_content },       //发送post请求携带的数据信息
                 //dataType: "json",     //期望返回的数据格式，也可以不设置
                 success: function (data) {
                     alert("评论成功");
@@ -128,7 +145,7 @@
                 }
             })
         }
-    </script>
+    </script> -->
 
     <!-- 验证码刷新 -->
     <script src="https://cdn.bootcss.com/jquery/1.12.3/jquery.min.js"></script>
