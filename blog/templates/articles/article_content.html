@@ -93,12 +93,10 @@
         <p>昵称<input type="text" name="nickname" id="nickname" /></p>
         <p>邮箱<input type="text" name="author_email" id="author_email" /></p>
         <p>链接<input type="text" name="author_link" id="author_link" /></p>
-        <textarea id="comment_content" name="comment_content" placeholder="在此输入评论内容"></textarea>
-        <!-- <div class="OwO-textarea">
-            <textarea class="OwO OwO-textarea" id='comment_content'></textarea>
-        </div> -->
+        <!-- 文本域 -->
+        <textarea class="OwO-textarea" id="comment_content" name="comment_content" placeholder="在此输入评论内容"></textarea>
         <!-- OwO表情 -->
-        <!-- <div class="OwO"></div> -->
+        <div class="OwO"></div>
         <input type="text" id="article_id" name="article_id" value="{{article.article_id}}" style="display:none">
         <a type="text" id="postaddress" href="{% url 'blog:submit_comment' %}" style="display: none"></a>
         <button type="submit" class="btn btn-primary" data-toggle="button" aria-pressed="false"
@@ -118,8 +116,19 @@
             width: '100%',
             maxHeight: '250px'
         });
+    </script> -->
+    <script src="{% static 'plugins/OwO/OwO.min.js' %}"></script>
+    <script>
+        var OwO_demo = new OwO({
+            logo: 'OωO表情',
+            container: document.getElementsByClassName('OwO')[0],
+            target: document.getElementsByClassName('OwO-textarea')[0],
+            api: window.location.origin + "{% static 'plugins/OwO/OwO.json' %}",
+            position: 'down',
+            width: '100%',
+            maxHeight: '250px'
+        });
     </script>
-    <script src="{%static 'plugins/OwO/OwO.min.js'%}"></script> -->
 
     <!-- ajax交互，提交评论 -->
     <!-- <script>
