@@ -51,38 +51,31 @@ def article_list(request):  # 文章列表
         raise Http404("这里还没有文章喔")
     return render(request, 'index_unlog.html', context)
 
-# 接受评论(ajax版本)
-# def submit_comment(request):
+# def submit_comment(request):  # 提交评论
 #     if request.method == "POST":
 #         form = CommentForm(request.POST)
+
 #         if form.is_valid():
-#             nickname = form.cleaned_data.get('nickname')
-#             author_email = form.cleaned_data('author_email')
-#             author_link = form.cleaned_data('author_link')
-#             comment_content = form.cleaned_data('comment_content')
-#             article_id = form.cleaned_data('article_id')
+#             article_id = form.cleaned_data['article_id']
+#             article = get_object_or_404(Article, pk=article_id)
+#             comment = Comment(
+#                 article=article,
+#                 content=form.cleaned_data['comment_content'],
+#                 author=form.cleaned_data['nickname'],
+#                 author_email=form.cleaned_data['author_email'],
+#                 author_link=form.cleaned_data['author_link']
+#             )
+#             comment.save()
 
-#             new_comment = Comment()
-#             new_comment.article = article_id
-#             new_comment.author = nickname
-#             new_comment.author_email = author_email
-#             new_comment.author_link = author_link
-#             new_comment.content = comment_content
-#             new_comment.save()  # 保存信息
+#             # 动态生成url
+#             url = reverse('blog:content', args=[article_id])
+#             return redirect(url)
 
-#             # 邮件推送
-#             # recipients = [ADMIN_EMAIL]
-#             # send_mail(nickname, author_email, comment, recipients)
-
-#             # return HttpResponseRedirect('/blog:content/')
-#             return redirect('/blog:content/')
-#     else:
-#         form = CommentForm()
+#     # 如果表单验证失败，或者不是POST请求，返回到原页面或其他逻辑
+#     return render(request, 'articles/article_content.html', {"commentForm": form})
 
 
-@require_POST
-# 提交评论
-def submit_comment(request):
+def submit_comment(request):  # 提交评论
     if request.method == "POST":
         # 从post中获取内容
         article_id = request.POST.get('article_id')
@@ -90,17 +83,9 @@ def submit_comment(request):
         author_email = request.POST.get('author_email')
         author_link = request.POST.get('author_link')
         comment_content = request.POST.get('comment_content')
-
         # 动态生成url
         url = reverse('blog:content', args=[article_id])
-        # url = str(article_id)
-        # 检查表单数据的有效性
-        if not article_id or not comment_content:
-            return redirect(url)
-            # return redirect("{% url 'blog:content' article.article_id %}")
-
         # 创建评论对象并保存到数据库
-        # article = Article.objects.get(id=article_id)
         article = get_object_or_404(Article, pk=article_id)
         comment = Comment(
             article=article, content=comment_content,
@@ -109,4 +94,3 @@ def submit_comment(request):
         comment.save()
 
     return redirect(url)
-    # return redirect("{% url 'blog:content' article.article_id %}")

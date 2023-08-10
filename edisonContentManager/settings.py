@@ -52,6 +52,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+    # 验证码中间件
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -71,13 +72,23 @@ TEMPLATES = [
             # 上下文处理器
             'context_processors': [
                 'django.template.context_processors.debug',
+                # 验证码支持
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'libraries': {
+                # 注册验证码插件
+                'captcha': 'captcha.templatetags.captcha_tags',
+            },
         },
     },
 ]
+
+# 配置验证码设置
+CAPTCHA_LENGTH = 4
+CAPTCHA_FONT_SIZE = 24
+CAPTCHA_NOISE_FUNCTIONS = ('captcha.helpers.noise_dots',)
 
 WSGI_APPLICATION = 'edisonContentManager.wsgi.application'
 

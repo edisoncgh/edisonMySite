@@ -1,4 +1,5 @@
 from django.urls import path
+from django.conf.urls import url, include
 
 from . import views
 
@@ -17,4 +18,7 @@ urlpatterns = [
     # 评论表单推送路由
     # ex: blog/commentpost?nickname=xxx
     path('submit_comment', views.submit_comment, name='submit_comment'),
+    # 验证码路由
+    path('captcha/', include('captcha.urls')),
+    url("^captcha/", include('captcha.urls')),
 ]
