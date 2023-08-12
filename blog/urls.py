@@ -21,4 +21,6 @@ urlpatterns = [
     # 验证码路由
     path('captcha/', include('captcha.urls')),
     url("^captcha/", include('captcha.urls')),
+    # 归档页面路由
+    path('archive/', views.archive, name='archive'),
 ]

@@ -28,6 +28,7 @@
     <center>
         <h1>{{ article.title }}</h1>
         <h4>浏览量：{{ article.visit_num }}</h4>
+        <h5>文章分类：{{ article.category }}</h5>
     </center>
     <!-- <p>
         {{article.content}}
@@ -100,6 +101,17 @@
             提交评论
         </button>
     </form>
+
+    <!-- 加载富文本编辑器 -->
+    <!-- {% load static %}
+    <script src="{% static 'plugins/mdeditor/js/editormd.min.js' %}"></script>
+    <script>
+        var editor = editormd("editor", {
+            width: "100%",
+            height: 300,
+            // 其他编辑器配置...
+        });
+    </script> -->
 
     <!-- 表单合法性验证 -->
     <script>

@@ -94,3 +94,9 @@ def submit_comment(request):  # 提交评论
         comment.save()
 
     return redirect(url)
+
+
+def archive(request):  # 归档页面
+    articles = Article.objects.filter(
+        publish_date__isnull=False).order_by('-publish_date')
+    return render(request, 'archive.html', {'articles': articles})
