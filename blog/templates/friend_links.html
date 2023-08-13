@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}友情链接{% endblock %}
+
+{% block content %}
+<h2>友情链接</h2>
+<ul>
+    <!-- 友链列表 -->
+    <!-- 友链排列顺序随机 -->
+    {% if friend_links %}
+    <ul>
+        {% for friend_link in friend_links %}
+        <li>
+            {% load static %}
+            <img src="{% static friend_link.link_avatar %}" alt="{{friend_link.link_desc}}">
+            <a href="{{friend_link.link_url}}" target="_blank">
+                <h4>{{friend_link.link_name}}</h4>
+            </a>
+            <p>{{friend_link.link_desc}}</p>
+            <p>{{friend_link.link_avatar}}</p>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>博主没有添加友链喔</p>
+    {% endif %}
+</ul>
+{% endblock %}

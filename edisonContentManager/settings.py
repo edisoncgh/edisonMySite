@@ -46,8 +46,14 @@ INSTALLED_APPS = [
 ]
 
 # markdown图片上传
-MEDIA_ROOT = os.path.join(BASE_DIR, '/blog/static/media/')
-MEDIA_URL = '/blog/static/media/'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'blog', 'static', 'media')
+# 配置在开发环境下提供媒体文件的访问
+# if settings.DEBUG:
+#     urlpatterns += static(
+#         settings.MEDIA_URL,
+#         document_root=settings.MEDIA_ROOT
+#     )
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

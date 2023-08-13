@@ -217,7 +217,10 @@ class Friendlink(models.Model):
     # 图片会被上传至MEDIA_ROOT / uploads
     # MEDIA_ROOT = BASE_DIR / blog / static / media
     link_avatar = models.ImageField(
-        verbose_name='友链头像', upload_to='media/uploads/', default="media/default.jpg")
+        verbose_name='友链头像',
+        upload_to='uploads/',  # 媒体文件路径会添加到 MEDIA_ROOT 下
+        default="default.jpg"  # 默认图片路径相对于 upload_to
+    )
 
     # 使对象在后台显示更友好
     def __str__(self):

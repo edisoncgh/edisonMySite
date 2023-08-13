@@ -33,3 +33,10 @@ urlpatterns = [
     # 验证码生成器
     path('captcha/', include('captcha.urls')),
 ]
+
+# 配置在开发环境下提供媒体文件的访问
+if settings.DEBUG:
+    urlpatterns += static(
+        settings.MEDIA_URL,
+        document_root=settings.MEDIA_ROOT
+    )

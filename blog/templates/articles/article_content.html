@@ -4,9 +4,6 @@
 
 {% block content %}
 <center>
-    <a href="{% url 'blog:index_unlog' %}">
-        返回首页
-    </a>
     <h1>{{ article.title }}</h1>
     <h4>浏览量：{{ article.visit_num }}</h4>
     {% if category %}

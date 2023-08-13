@@ -35,4 +35,10 @@ urlpatterns = [
         views.like_article,
         name='like_article'
     ),
+    # 友链页面
+    path(
+        'friend_links/',
+        views.friend_links,
+        name='friend_links'
+    ),
 ]

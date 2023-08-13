@@ -6,9 +6,10 @@ from django.views.decorators.http import require_POST
 from django.core.mail import send_mail  # 邮件推送
 from django.shortcuts import redirect, reverse
 from django.http import JsonResponse  # json返回
-from .models import Article, Comment, Category
+from .models import Article, Comment, Category, Friendlink
 from .forms import CommentForm
 from datetime import datetime, timedelta  # 日期模块
+import random  # 随机模块
 # Create your views here.
 
 
@@ -159,3 +160,14 @@ def set_liked_cookie(request, article_id):  # 用cookie记录点赞操作
         httponly=True
     )
     return response
+
+
+def friend_links(request):  # 友链页面
+    try:
+        friend_links = Friendlink.objects.all()
+        random_friend_links = list(friend_links)  # 将 QuerySet 转换为列表
+        random.shuffle(random_friend_links)  # 随机排序
+        context = {'friend_links': random_friend_links}
+    except Friendlink.DoesNotExist:
+        raise Http404("博主还没有添加友链噢")
+    return render(request, 'friend_links.html', context)

@@ -11,6 +11,12 @@
     <p>
         <a href="{% url 'blog:archive' %}">转到归档</a>
     </p>
+    <p>
+        <a href="{% url 'admin:index' %}">Admin Page</a>
+    </p>
+    <p>
+        <a href="{% url 'blog:friend_links' %}">友链页面</a>
+    </p>
 
     <!-- 文章列表 -->
     {% if article_list %}
