@@ -5,8 +5,10 @@ from django.shortcuts import render, get_object_or_404
 from django.views.decorators.http import require_POST
 from django.core.mail import send_mail  # 邮件推送
 from django.shortcuts import redirect, reverse
+from django.http import JsonResponse  # json返回
 from .models import Article, Comment, Category
 from .forms import CommentForm
+from datetime import datetime, timedelta  # 日期模块
 # Create your views here.
 
 
@@ -31,7 +33,14 @@ def article_content(request, article_id):  # 文章详情
     article = get_object_or_404(Article, pk=article_id)  # 获取文章
     article.visited()
     comments = Comment.objects.filter(article=article_id)  # 获取评论列表
-    category = get_object_or_404(Category, pk=article.category.cat_id)  # 获取分类
+
+    if article.category:
+        category = get_object_or_404(
+            Category,
+            pk=article.category.cat_id
+        )  # 获取分类
+    else:
+        category = None
 
     # 获取前一篇与后一篇文章
     previous_post = Article.objects.filter(article_id=article_id-1)
@@ -117,3 +126,36 @@ def category_articles(request, category_id):  # 分类页面
     }
 
     return render(request, 'category.html', context)
+
+
+def like_article(request, article_id):  # 点赞功能
+    article = get_object_or_404(Article, article_id=article_id)
+
+    if not has_liked(request, article_id):
+        # 点赞
+        article.liked()
+        # 存储文章 ID 到访客的Cookie中
+        set_liked_cookie(request, article_id)
+
+    return JsonResponse({'success': True, 'like_count': article.like_num})
+
+
+def has_liked(request, article_id):  # 根据cookie检查是否已经点赞
+    return f'liked_article_{article_id}' in request.COOKIES
+
+
+def set_liked_cookie(request, article_id):  # 用cookie记录点赞操作
+    article = get_object_or_404(Article, article_id=article_id)
+    expires = datetime.now() + timedelta(days=365)  # 设置cookie有效期为一年
+    response = render(
+        request,
+        'articles/article_content.html',
+        {'article': article}
+    )
+    response.set_cookie(
+        f'liked_article_{article_id}',
+        'true',
+        expires=expires,
+        httponly=True
+    )
+    return response

@@ -4,14 +4,19 @@
 
 {% block content %}
 <center>
+    <a href="{% url 'blog:index_unlog' %}">
+        返回首页
+    </a>
     <h1>{{ article.title }}</h1>
     <h4>浏览量：{{ article.visit_num }}</h4>
+    {% if category %}
     <h5>
         文章分类：
         <a href="{% url 'blog:category_articles' category.cat_id %}" target="_blank">
             {{ article.category }}
         </a>
     </h5>
+    {% endif %}
 </center>
 <!-- <p>
     {{article.content}}
@@ -184,6 +189,52 @@
         });
     })
 </script> -->
+
+<!-- 点赞 -->
+<button class="btn btn-primary" id="like-button">
+    {{ article.like_num }}<i class="fa-regular fa-thumbs-up"></i>
+</button>
+
+<script>
+    var articleId = {{ article.article_id }};
+    function hasLiked() {
+        // 检查是否存在点赞的 Cookie
+        return document.cookie.includes('liked=true');
+    }
+
+    function setLikedCookie() {
+        // 设置点赞的 Cookie，有效期可根据需要设置
+        document.cookie = 'liked=true; expires=Fri, 31 Dec 9999 23:59:59 GMT';
+    }
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var likeButton = document.getElementById('like-button');
+
+        likeButton.addEventListener('click', function () {
+            if (!hasLiked()) {
+                // 执行点赞逻辑
+                likeButton.disabled = true;
+                var url = '/blog/like_article/' + articleId + '/';
+
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // 更新数据
+                            var likeCount = document.getElementById('like-count');
+                            likeCount.textContent = data.like_count;
+                            setLikedCookie();
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+                // 存储点赞标记到 Cookie
+            }
+        });
+    });
+</script>
 
 <!-- 评论区 -->
 {% if comments %}

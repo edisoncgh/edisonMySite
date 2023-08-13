@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'blog.apps.BlogConfig',  # 注册博客子系统
     'mdeditor',  # markdown支持
     'captcha',  # 验证码支持
+    'fontawesomefree',  # fontawesome免费版
 ]
 
 # markdown图片上传

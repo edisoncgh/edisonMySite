@@ -29,4 +29,10 @@ urlpatterns = [
         views.category_articles,
         name='category_articles'
     ),
+    # 点赞功能路由
+    path(
+        'like_article/<int:article_id>/',
+        views.like_article,
+        name='like_article'
+    ),
 ]
