@@ -23,4 +23,10 @@ urlpatterns = [
     url("^captcha/", include('captcha.urls')),
     # 归档页面路由
     path('archive/', views.archive, name='archive'),
+    # 分类页面路由
+    path(
+        'category/<int:category_id>/',
+        views.category_articles,
+        name='category_articles'
+    ),
 ]

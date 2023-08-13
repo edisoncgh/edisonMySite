@@ -5,7 +5,7 @@ from django.shortcuts import render, get_object_or_404
 from django.views.decorators.http import require_POST
 from django.core.mail import send_mail  # 邮件推送
 from django.shortcuts import redirect, reverse
-from .models import Article, Comment
+from .models import Article, Comment, Category
 from .forms import CommentForm
 # Create your views here.
 
@@ -31,6 +31,7 @@ def article_content(request, article_id):  # 文章详情
     article = get_object_or_404(Article, pk=article_id)  # 获取文章
     article.visited()
     comments = Comment.objects.filter(article=article_id)  # 获取评论列表
+    category = get_object_or_404(Category, pk=article.category.cat_id)  # 获取分类
 
     # 获取前一篇与后一篇文章
     previous_post = Article.objects.filter(article_id=article_id-1)
@@ -40,7 +41,7 @@ def article_content(request, article_id):  # 文章详情
     if next_post:
         next_post = Article.objects.get(article_id=article_id+1)
 
-    return render(request, 'articles/article_content.html', {'article': article, 'comments': comments, 'prevpost': previous_post, 'nextpost': next_post})
+    return render(request, 'articles/article_content.html', {'article': article, 'comments': comments, 'prevpost': previous_post, 'nextpost': next_post, 'category': category})
 
 
 def article_list(request):  # 文章列表
@@ -98,5 +99,21 @@ def submit_comment(request):  # 提交评论
 
 def archive(request):  # 归档页面
     articles = Article.objects.filter(
-        publish_date__isnull=False).order_by('-publish_date')
+        publish_date__isnull=False
+    ).order_by('-publish_date')
+
     return render(request, 'archive.html', {'articles': articles})
+
+
+def category_articles(request, category_id):  # 分类页面
+    category = Category.objects.get(cat_id=category_id)
+    articles = Article.objects.filter(
+        category=category
+    ).order_by('-publish_date')
+
+    context = {
+        'category': category,
+        'articles': articles,
+    }
+
+    return render(request, 'category.html', context)

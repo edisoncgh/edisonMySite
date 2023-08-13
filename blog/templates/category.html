@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}分类为{{ category.name }}的文章{% endblock %}
+
+{% block content %}
+<h2>{{ category.name }}</h2>
+<ul>
+    <ul>
+        {% for article in articles %}
+        <li>
+            {{ article.publish_date }}：<a href="{% url 'blog:content' article.article_id %}">{{ article.title }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+</ul>
+{% endblock %}

@@ -6,7 +6,12 @@
 <center>
     <h1>{{ article.title }}</h1>
     <h4>浏览量：{{ article.visit_num }}</h4>
-    <h5>文章分类：{{ article.category }}</h5>
+    <h5>
+        文章分类：
+        <a href="{% url 'blog:category_articles' category.cat_id %}" target="_blank">
+            {{ article.category }}
+        </a>
+    </h5>
 </center>
 <!-- <p>
     {{article.content}}
