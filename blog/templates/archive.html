@@ -1,21 +1,13 @@
-<!-- 归档页面 -->
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
 
-<head>
-    {% load static %}
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>首页</title>
-</head>
+{% block title %}文章归档{% endblock %}
 
-<body>
-    <h2>文章归档</h2>
-    <ul>
-        {% for article in articles %}
-        <li>{{ article.publish_date }}：<a href="{% url 'blog:content' article.article_id %}">{{ article.title }}</a>
-        </li>
-        {% endfor %}
-    </ul>
-</body>
+{% block content %}
+<h2>文章归档</h2>
+<ul>
+    {% for article in articles %}
+    <li>{{ article.publish_date }}：<a href="{% url 'blog:content' article.article_id %}">{{ article.title }}</a>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

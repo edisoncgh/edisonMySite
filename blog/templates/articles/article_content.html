@@ -1,220 +1,197 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
 
-<head>
-    {% load static %}
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta charset="UTF-8">
-    <link href="{% static 'mdeditor/css/editormd.min.css' %}" rel="stylesheet">
-    <link href="{% static 'mdeditor/css/editormd.preview.css' %}" rel="stylesheet">
-    <!-- OwO评论区表情 -->
-    <link rel="stylesheet" href="{%static 'plugins/OwO/OwO.min.css'%}">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <!-- bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
-        integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
-    <!-- bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
-        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-7ymO4nGrkm372HoSbq1OY2DP4pEZnMiA+E0F3zPr+JQQtQ82gQ1HPY3QIVtztVua"
-        crossorigin="anonymous"></script>
-    <title>文章详情页</title>
-</head>
+{% block title %}{{ article.title }}{% endblock %}
 
-<body>
-    <center>
-        <h1>{{ article.title }}</h1>
-        <h4>浏览量：{{ article.visit_num }}</h4>
-        <h5>文章分类：{{ article.category }}</h5>
-    </center>
-    <!-- <p>
-        {{article.content}}
-    </p> -->
+{% block content %}
+<center>
+    <h1>{{ article.title }}</h1>
+    <h4>浏览量：{{ article.visit_num }}</h4>
+    <h5>文章分类：{{ article.category }}</h5>
+</center>
+<!-- <p>
+    {{article.content}}
+</p> -->
 
-    <div id="content"><textarea>{{article.content}}</textarea></div>
+<div id="content"><textarea>{{article.content}}</textarea></div>
 
-    <!-- 解析Markdown -->
-    <script src="{% static 'mdeditor/js/jquery.min.js' %}"></script>
-    <script src="{% static 'mdeditor/js/editormd.min.js' %}"></script>
-    <script src="{% static 'mdeditor/js/lib/marked.min.js' %}"></script>
-    <script src="{% static 'mdeditor/js/lib/prettify.min.js' %}"></script>
-    <script src="{% static 'mdeditor/js/lib/raphael.min.js' %}"></script>
-    <script src="{% static 'mdeditor/js/lib/underscore.min.js' %}"></script>
-    <script src="{% static 'mdeditor/js/lib/sequence-diagram.min.js' %}"></script>
-    <script src="{% static 'mdeditor/js/lib/flowchart.min.js' %}"></script>
-    <script src="{% static 'mdeditor/js/lib/jquery.flowchart.min.js' %}"></script>
+{% load static %}
+<!-- 解析Markdown -->
+<script src="{% static 'mdeditor/js/jquery.min.js' %}"></script>
+<script src="{% static 'mdeditor/js/editormd.min.js' %}"></script>
+<script src="{% static 'mdeditor/js/lib/marked.min.js' %}"></script>
+<script src="{% static 'mdeditor/js/lib/prettify.min.js' %}"></script>
+<script src="{% static 'mdeditor/js/lib/raphael.min.js' %}"></script>
+<script src="{% static 'mdeditor/js/lib/underscore.min.js' %}"></script>
+<script src="{% static 'mdeditor/js/lib/sequence-diagram.min.js' %}"></script>
+<script src="{% static 'mdeditor/js/lib/flowchart.min.js' %}"></script>
+<script src="{% static 'mdeditor/js/lib/jquery.flowchart.min.js' %}"></script>
 
-    <script>
-        $(function () {
-            // js 解析markdown
-            editormd.markdownToHTML("content", {
-                emoji: true,
-                taskList: true,
-                tex: true,  // 默认不解析
-                flowChart: true,  // 默认不解析
-                sequenceDiagram: true,  // 默认不解析
-            });
+<script>
+    $(function () {
+        // js 解析markdown
+        editormd.markdownToHTML("content", {
+            emoji: true,
+            taskList: true,
+            tex: true,  // 默认不解析
+            flowChart: true,  // 默认不解析
+            sequenceDiagram: true,  // 默认不解析
+        });
 
-            $(".reference-link").each(function (i, obj) {
-                console.log(obj)
-            })
+        $(".reference-link").each(function (i, obj) {
+            console.log(obj)
         })
+    })
 
-    </script>
+</script>
 
-    <!-- 上下翻页 -->
-    {% if prevpost %}
-    <a class="btn" href="{% url 'blog:content' prevpost.article_id %}"
-        style="text-decoration: none; float: left;font-size: 20px;">
-        上一篇：{{ prevpost.title }}
-    </a>
-    {% endif %}
-    {% if nextpost %}
-    <a class="btn" href="{% url 'blog:content' nextpost.article_id %}"
-        style="text-decoration: none; float: right;font-size: 20px;">
-        下一篇：{{ nextpost.title }}
-    </a>
-    {% endif %}
+<!-- 上下翻页 -->
+{% if prevpost %}
+<a class="btn" href="{% url 'blog:content' prevpost.article_id %}"
+    style="text-decoration: none; float: left;font-size: 20px;">
+    上一篇：{{ prevpost.title }}
+</a>
+{% endif %}
+{% if nextpost %}
+<a class="btn" href="{% url 'blog:content' nextpost.article_id %}"
+    style="text-decoration: none; float: right;font-size: 20px;">
+    下一篇：{{ nextpost.title }}
+</a>
+{% endif %}
 
-    <br />
-    <br />
+<br />
+<br />
 
-    <!-- 评论区表单 -->
-    <form id="comment-form" method="post" enctype="multipart/form-data" action="{% url 'blog:submit_comment' %}">
-        {% csrf_token %}
-        <p>昵称<br /><input type="text" name="nickname" id="nickname" required /></p>
-        <p>邮箱<br /><input type="email" name="author_email" id="author_email" required /></p>
-        <p>链接(含协议头)<br /><input type="url" name="author_link" id="author_link" /></p>
-        <!-- 文本域 -->
-        <textarea class="OwO-textarea" id="comment_content" name="comment_content" placeholder="在此输入评论内容"
-            required></textarea>
-        <!-- OwO表情 -->
-        <div class="OwO"></div>
-        <input type="hidden" id="article_id" name="article_id" value="{{ article.article_id }}">
-        <!-- 验证码 -->
-        <!-- <label for="checknumber">{{ form.captcha.field.label }}</label>
-        {{ form.captcha }} -->
-        <button type="submit" class="btn btn-primary" data-toggle="button">
-            提交评论
-        </button>
-    </form>
-
-    <!-- 加载富文本编辑器 -->
-    <!-- {% load static %}
-    <script src="{% static 'plugins/mdeditor/js/editormd.min.js' %}"></script>
-    <script>
-        var editor = editormd("editor", {
-            width: "100%",
-            height: 300,
-            // 其他编辑器配置...
-        });
-    </script> -->
-
-    <!-- 表单合法性验证 -->
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            var commentForm = document.getElementById("comment-form");
-            commentForm.addEventListener("submit", function (event) {
-                var nicknameInput = document.getElementById("nickname");
-                var emailInput = document.getElementById("author_email");
-                var linkInput = document.getElementById("author_link");
-                var commentContentInput = document.getElementById("comment_content");
-
-                // 清除之前的验证样式
-                nicknameInput.classList.remove("invalid-input");
-                emailInput.classList.remove("invalid-input");
-                linkInput.classList.remove("invalid-input");
-                commentContentInput.classList.remove("invalid-input");
-
-                var isValid = true;
-
-                // 验证昵称
-                if (nicknameInput.value.trim() === "") {
-                    alert("请输入昵称");
-                    nicknameInput.classList.add("invalid-input");
-                    isValid = false;
-                }
-
-                // 验证邮箱
-                var emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-                if (!emailPattern.test(emailInput.value)) {
-                    alert("请输入有效的电子邮件地址");
-                    emailInput.classList.add("invalid-input");
-                    isValid = false;
-                }
-
-                // 验证链接
-                var linkPattern = /^(https?:\/\/)?([a-z0-9-]+\.)+[a-z]{2,6}(\/.*)?$/i;
-                if (linkInput.value.trim() !== "" && !linkPattern.test(linkInput.value)) {
-                    alert("请输入有效的URL地址");
-                    linkInput.classList.add("invalid-input");
-                    isValid = false;
-                }
-
-                // 验证评论内容
-                if (commentContentInput.value.trim() === "") {
-                    alert("请输入评论内容");
-                    commentContentInput.classList.add("invalid-input");
-                    isValid = false;
-                }
-
-                if (!isValid) {
-                    event.preventDefault();
-                }
-            });
-        });
-    </script>
+<!-- 评论区表单 -->
+<form id="comment-form" method="post" enctype="multipart/form-data" action="{% url 'blog:submit_comment' %}">
+    {% csrf_token %}
+    <p>昵称<br /><input type="text" name="nickname" id="nickname" required /></p>
+    <p>邮箱<br /><input type="email" name="author_email" id="author_email" required /></p>
+    <p>链接(含协议头)<br /><input type="url" name="author_link" id="author_link" /></p>
+    <!-- 文本域 -->
+    <textarea class="OwO-textarea" id="comment_content" name="comment_content" placeholder="在此输入评论内容"
+        required></textarea>
     <!-- OwO表情 -->
-    <script src="{% static 'plugins/OwO/OwO.min.js' %}"></script>
-    <script>
-        var OwO_demo = new OwO({
-            logo: 'OωO表情',
-            container: document.getElementsByClassName('OwO')[0],
-            target: document.getElementsByClassName('OwO-textarea')[0],
-            api: window.location.origin + "{% static 'plugins/OwO/OwO.json' %}",
-            position: 'down',
-            width: '100%',
-            maxHeight: '250px'
+    <div class="OwO"></div>
+    <input type="hidden" id="article_id" name="article_id" value="{{ article.article_id }}">
+    <!-- 验证码 -->
+    <!-- <label for="checknumber">{{ form.captcha.field.label }}</label>
+    {{ form.captcha }} -->
+    <button type="submit" class="btn btn-primary" data-toggle="button">
+        提交评论
+    </button>
+</form>
+
+<!-- 加载富文本编辑器 -->
+<!-- {% load static %}
+<script src="{% static 'plugins/mdeditor/js/editormd.min.js' %}"></script>
+<script>
+    var editor = editormd("editor", {
+        width: "100%",
+        height: 300,
+        // 其他编辑器配置...
+    });
+</script> -->
+
+<!-- 表单合法性验证 -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var commentForm = document.getElementById("comment-form");
+        commentForm.addEventListener("submit", function (event) {
+            var nicknameInput = document.getElementById("nickname");
+            var emailInput = document.getElementById("author_email");
+            var linkInput = document.getElementById("author_link");
+            var commentContentInput = document.getElementById("comment_content");
+
+            // 清除之前的验证样式
+            nicknameInput.classList.remove("invalid-input");
+            emailInput.classList.remove("invalid-input");
+            linkInput.classList.remove("invalid-input");
+            commentContentInput.classList.remove("invalid-input");
+
+            var isValid = true;
+
+            // 验证昵称
+            if (nicknameInput.value.trim() === "") {
+                alert("请输入昵称");
+                nicknameInput.classList.add("invalid-input");
+                isValid = false;
+            }
+
+            // 验证邮箱
+            var emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+            if (!emailPattern.test(emailInput.value)) {
+                alert("请输入有效的电子邮件地址");
+                emailInput.classList.add("invalid-input");
+                isValid = false;
+            }
+
+            // 验证链接
+            var linkPattern = /^(https?:\/\/)?([a-z0-9-]+\.)+[a-z]{2,6}(\/.*)?$/i;
+            if (linkInput.value.trim() !== "" && !linkPattern.test(linkInput.value)) {
+                alert("请输入有效的URL地址");
+                linkInput.classList.add("invalid-input");
+                isValid = false;
+            }
+
+            // 验证评论内容
+            if (commentContentInput.value.trim() === "") {
+                alert("请输入评论内容");
+                commentContentInput.classList.add("invalid-input");
+                isValid = false;
+            }
+
+            if (!isValid) {
+                event.preventDefault();
+            }
         });
-    </script>
+    });
+</script>
+<!-- OwO表情 -->
+<script src="{% static 'plugins/OwO/OwO.min.js' %}"></script>
+<script>
+    var OwO_demo = new OwO({
+        logo: 'OωO表情',
+        container: document.getElementsByClassName('OwO')[0],
+        target: document.getElementsByClassName('OwO-textarea')[0],
+        api: window.location.origin + "{% static 'plugins/OwO/OwO.json' %}",
+        position: 'down',
+        width: '100%',
+        maxHeight: '250px'
+    });
+</script>
 
-    <!-- 验证码刷新 -->
-    <!-- <script src="https://cdn.bootcss.com/jquery/1.12.3/jquery.min.js"></script>
-    <script>
-        //点击刷新验证码
-        $(function () {
-            $('.captcha').css({
-                'cursor': 'pointer'
-            });
-            // ajax刷新
-            $('.captcha').click(function () {
-                console.log('click');
-                $.get("{% url 'captcha-refresh' %}",
-                    function (result) {
-                        $('.captcha').attr('src', result['image_url']);
-                        $('#id_captcha_0').val(result['key'])
-                    });
-            });
-        })
-    </script> -->
+<!-- 验证码刷新 -->
+<!-- <script src="https://cdn.bootcss.com/jquery/1.12.3/jquery.min.js"></script>
+<script>
+    //点击刷新验证码
+    $(function () {
+        $('.captcha').css({
+            'cursor': 'pointer'
+        });
+        // ajax刷新
+        $('.captcha').click(function () {
+            console.log('click');
+            $.get("{% url 'captcha-refresh' %}",
+                function (result) {
+                    $('.captcha').attr('src', result['image_url']);
+                    $('#id_captcha_0').val(result['key'])
+                });
+        });
+    })
+</script> -->
 
-    <!-- 评论区 -->
-    {% if comments %}
-    <ul>
-        {% for comment in comments %}
-        {% if comment.status == 'npr' %}
-        <li><b>{{ comment.author }}</b> 发表了一条评论，但它还没过审</li>
-        {% else %}
-        <li><b>{{ comment.author }}</b> 说 {{ comment.content }}</li>
-        {% endif %}
-        {% endfor %}
-    </ul>
+<!-- 评论区 -->
+{% if comments %}
+<ul>
+    {% for comment in comments %}
+    {% if comment.status == 'npr' %}
+    <li><b>{{ comment.author }}</b> 发表了一条评论，但它还没过审</li>
     {% else %}
-    <p>文章暂时没有评论</p>
+    <li><b>{{ comment.author }}</b> 说 {{ comment.content }}</li>
     {% endif %}
-</body>
-
-</html>
+    {% endfor %}
+</ul>
+{% else %}
+<p>文章暂时没有评论</p>
+{% endif %}
+{% endblock %}
