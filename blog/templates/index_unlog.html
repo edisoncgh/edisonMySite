@@ -4,37 +4,76 @@
 
 {% block content %}
 <center>
+    {% load static %}
     <h1>个人博客系统测试</h1>
-    <p>
-        <a href="{% url 'blog:login' %}">转到登录</a>
-    </p>
-    <p>
-        <a href="{% url 'blog:archive' %}">转到归档</a>
-    </p>
-    <p>
-        <a href="{% url 'admin:index' %}">Admin Page</a>
-    </p>
-    <p>
-        <a href="{% url 'blog:friend_links' %}">友链页面</a>
-    </p>
+    <!-- bootstrap 水平菜单 -->
+    <ul class="nav justify-content-center">
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'admin:index' %}">Admin Page</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'blog:login' %}">转到登录</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'blog:archive' %}">转到归档</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'blog:friend_links' %}">友链页面</a>
+        </li>
+    </ul>
+</center>
 
-    <!-- 文章列表 -->
-    {% if article_list %}
-    <ul>
-        <!-- 单个文章标题 -->
+<!-- 文章列表 -->
+{% if article_list %}
+<ul>
+    <!-- bootstrap 栅格布局 -->
+    <div class="container">
         {% for article in article_list %}
         {% if article.content_type == 'lg' %}
-        <li><a href="{% url 'blog:content' article.article_id %}">{{ article.title }}</a></li>
+        <div class="row">
+            <div class="col"></div>
+            <!-- 居中宽栏 -->
+            <div class="col-6">
+                <!-- bootstrap 卡片 -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        {{ article.category }}
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ article.title }}</h5>
+                        <p class="card-text">这里放摘要</p>
+                        <a href="{% url 'blog:content' article.article_id %}" class="btn btn-primary">阅读正文</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col"></div>
+        </div>
         {% else %}
-        <li>
-            <h4>{{article.title}}</h4>
-            <p>{{article.content}}</p>
-        </li>
+        <!-- bootstrap 卡片 -->
+        <div class="row">
+            <div class="col"></div>
+            <!-- 居中宽栏 -->
+            <div class="col-6">
+                <!-- bootstrap 卡片 -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        说说
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">{{ article.title }}</h3>
+                        <p class="card-text">{{ article.content }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col"></div>
+        </div>
         {% endif %}
         {% endfor %}
-    </ul>
-    {% else %}
-    <p>No articles are available.</p>
-    {% endif %}
-</center>
+        <!-- bootstrap 占位元素 -->
+        <div class="spacer card"></div>
+    </div>
+</ul>
+{% else %}
+<p>No articles are available.</p>
+{% endif %}
 {% endblock %}

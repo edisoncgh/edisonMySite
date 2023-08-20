@@ -1,18 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>起始页</title>
-</head>
+{% block title %}起始页{% endblock %}
 
-<body>
-    <center>
-        <h1>这里是个人网站的起始页</h1>
-        <h2><a href="{% url 'blog:index_unlog' %}">转到首页</a></h2>
-    </center>
-</body>
-
-</html>
+{% block content %}
+<div class="jumbotron">
+    <h1 class="display-4">这里是Edison的博客</h1>
+    <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to
+        featured content or information.</p>
+    <hr class="my-4">
+    <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
+    <a class="btn btn-primary btn-lg" href="{% url 'blog:index_unlog' %}" role="button">转到首页</a>
+</div>
+{% endblock %}

@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 
-{% block title %}分类为{{ category.name }}的文章{% endblock %}
+{% block title %}分类为{{ category.cat_name }}的文章{% endblock %}
 
 {% block content %}
-<h2>{{ category.name }}</h2>
+<h2>{{ category.cat_name }}</h2>
 <ul>
     <ul>
         {% for article in articles %}

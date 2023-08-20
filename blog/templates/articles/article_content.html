@@ -19,7 +19,21 @@
     {{article.content}}
 </p> -->
 
-<div id="content"><textarea>{{article.content}}</textarea></div>
+<!-- bootstrap 栅格 -->
+<div class="row">
+    <div class="col"></div>
+    <!-- 居中宽栏 -->
+    <div class="col-6">
+        <div id="content"><textarea>{{article.content}}</textarea></div>
+        <!-- 点赞 -->
+        <center>
+            <button class="btn btn-primary" id="like-button">
+                {{ article.like_num }} <i class="fa-regular fa-thumbs-up"></i>
+            </button>
+        </center>
+    </div>
+    <div class="col"></div>
+</div>
 
 {% load static %}
 <!-- 解析Markdown -->
@@ -51,42 +65,81 @@
 
 </script>
 
-<!-- 上下翻页 -->
-{% if prevpost %}
-<a class="btn" href="{% url 'blog:content' prevpost.article_id %}"
-    style="text-decoration: none; float: left;font-size: 20px;">
-    上一篇：{{ prevpost.title }}
-</a>
-{% endif %}
-{% if nextpost %}
-<a class="btn" href="{% url 'blog:content' nextpost.article_id %}"
-    style="text-decoration: none; float: right;font-size: 20px;">
-    下一篇：{{ nextpost.title }}
-</a>
-{% endif %}
+<!-- bootstrap 栅格 -->
+<div class="row">
+    <div class="col"></div>
+    <!-- 居中宽栏 -->
+    <div class="col-6">
+        <!-- 上下翻页 -->
+        {% if prevpost %}
+        <a class="btn" href="{% url 'blog:content' prevpost.article_id %}"
+            style="text-decoration: none; float: left;font-size: 20px;">
+            上一篇：{{ prevpost.title }}
+        </a>
+        {% endif %}
+        {% if nextpost %}
+        <a class="btn" href="{% url 'blog:content' nextpost.article_id %}"
+            style="text-decoration: none; float: right;font-size: 20px;">
+            下一篇：{{ nextpost.title }}
+        </a>
+        {% endif %}
+    </div>
+    <div class="col"></div>
+</div>
 
 <br />
 <br />
 
-<!-- 评论区表单 -->
-<form id="comment-form" method="post" enctype="multipart/form-data" action="{% url 'blog:submit_comment' %}">
-    {% csrf_token %}
-    <p>昵称<br /><input type="text" name="nickname" id="nickname" required /></p>
-    <p>邮箱<br /><input type="email" name="author_email" id="author_email" required /></p>
-    <p>链接(含协议头)<br /><input type="url" name="author_link" id="author_link" /></p>
-    <!-- 文本域 -->
-    <textarea class="OwO-textarea" id="comment_content" name="comment_content" placeholder="在此输入评论内容"
-        required></textarea>
-    <!-- OwO表情 -->
-    <div class="OwO"></div>
-    <input type="hidden" id="article_id" name="article_id" value="{{ article.article_id }}">
-    <!-- 验证码 -->
-    <!-- <label for="checknumber">{{ form.captcha.field.label }}</label>
-    {{ form.captcha }} -->
-    <button type="submit" class="btn btn-primary" data-toggle="button">
-        提交评论
-    </button>
-</form>
+<!-- bootstrap 栅格 -->
+<div class="row mb-4">
+    <div class="col"></div>
+    <!-- 居中宽栏 -->
+    <div class="col-6">
+        <!-- 评论区表单 -->
+        <!-- <form id="comment-form" method="post" enctype="multipart/form-data" action="{% url 'blog:submit_comment' %}">
+            {% csrf_token %}
+            <p>昵称<br /><input type="text" name="nickname" id="nickname" required /></p>
+            <p>邮箱<br /><input type="email" name="author_email" id="author_email" required /></p>
+            <p>链接(含协议头)<br /><input type="url" name="author_link" id="author_link" /></p>
+            
+            <textarea class="OwO-textarea" id="comment_content" name="comment_content" placeholder="在此输入评论内容"
+                required></textarea>
+            
+            <div class="OwO"></div>
+            <input type="hidden" id="article_id" name="article_id" value="{{ article.article_id }}">
+            <button type="submit" class="btn btn-primary" data-toggle="button">
+                提交评论
+            </button>
+        </form> -->
+        <form id="comment-form" method="post" enctype="multipart/form-data" action="{% url 'blog:submit_comment' %}">
+            {% csrf_token %}
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label for="nickname">昵称</label>
+                    <input type="text" class="form-control" id="nickname" name="nickname" required>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="author_email">邮箱</label>
+                    <input type="email" class="form-control" id="author_email" name="author_email" required>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="author_link">链接(含协议头)</label>
+                    <input type="url" class="form-control" id="author_link" name="author_link">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="comment_content">评论内容</label>
+                <textarea class="form-control OwO-textarea" id="comment_content" name="comment_content"
+                    placeholder="在此输入评论内容" required></textarea>
+                <div class="OwO"></div>
+            </div>
+            <input type="hidden" id="article_id" name="article_id" value="{{ article.article_id }}">
+            <button type="submit" class="btn btn-primary">提交评论</button>
+        </form>
+
+    </div>
+    <div class="col"></div>
+</div>
 
 <!-- 加载富文本编辑器 -->
 <!-- {% load static %}
@@ -187,11 +240,6 @@
     })
 </script> -->
 
-<!-- 点赞 -->
-<button class="btn btn-primary" id="like-button">
-    {{ article.like_num }}<i class="fa-regular fa-thumbs-up"></i>
-</button>
-
 <script>
     var articleId = {{ article.article_id }};
     function hasLiked() {
@@ -233,18 +281,73 @@
     });
 </script>
 
-<!-- 评论区 -->
-{% if comments %}
-<ul>
-    {% for comment in comments %}
-    {% if comment.status == 'npr' %}
-    <li><b>{{ comment.author }}</b> 发表了一条评论，但它还没过审</li>
-    {% else %}
-    <li><b>{{ comment.author }}</b> 说 {{ comment.content }}</li>
-    {% endif %}
-    {% endfor %}
-</ul>
-{% else %}
-<p>文章暂时没有评论</p>
-{% endif %}
+<!-- bootstrap 栅格 -->
+<div class="row">
+    <div class="col"></div>
+    <!-- 居中宽栏 -->
+    <div class="col-6">
+        <!-- 评论区 -->
+        {% if comments %}
+        <ul>
+            {% for comment in comments %}
+            {% if comment.status == 'npr' %}
+            <!-- UIkit评论区卡片 -->
+            <article class="uk-comment mb-4">
+                <header class="uk-comment-header uk-grid-medium uk-flex-middle" uk-grid>
+                    <div class="uk-width-auto">
+                        <img class="uk-comment-avatar rounded " src="{{ comment.get_gravatar }}" width="80" height="80"
+                            alt="">
+                    </div>
+                    <div class="uk-width-expand">
+                        <h4 class="uk-comment-title uk-margin-remove">
+                            <a class="uk-link-reset" href="{{comment.author_link}}" target="_blank">
+                                {{comment.author }}
+                            </a>
+                        </h4>
+                        <ul class="uk-comment-meta uk-subnav uk-subnav-divider uk-margin-remove-top">
+                            <li>{{comment.comment_date}}</li>
+                            <!-- <li><a href="#">Reply</a></li> -->
+                        </ul>
+                    </div>
+                </header>
+                <div class="uk-comment-body">
+                    <p>该评论内容还未过审</p>
+                </div>
+            </article>
+            <!-- <li><b>{{ comment.author }}</b> 发表了一条评论，但它还没过审</li> -->
+            {% else %}
+            <!-- UIkit评论区卡片 -->
+            <article class="uk-comment mb-4">
+                <header class="uk-comment-header uk-grid-medium uk-flex-middle" uk-grid>
+                    <div class="uk-width-auto">
+                        <img class="uk-comment-avatar rounded " src="{{ comment.get_gravatar }}" width="80" height="80"
+                            alt="">
+                    </div>
+                    <div class="uk-width-expand">
+                        <h4 class="uk-comment-title uk-margin-remove">
+                            <a class="uk-link-reset" href="{{comment.author_link}}" target="_blank">
+                                {{comment.author }}
+                            </a>
+                        </h4>
+                        <ul class="uk-comment-meta uk-subnav uk-subnav-divider uk-margin-remove-top">
+                            <li>{{comment.comment_date}}</li>
+                            <!-- <li><a href="#">Reply</a></li> -->
+                        </ul>
+                    </div>
+                </header>
+                <div class="uk-comment-body">
+                    <p>{{ comment.content }}</p>
+                </div>
+            </article>
+            <!-- <li><b>{{ comment.author }}</b> 说 {{ comment.content }}</li> -->
+            {% endif %}
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>文章暂时没有评论</p>
+        {% endif %}
+    </div>
+    <div class="col"></div>
+</div>
+
 {% endblock %}

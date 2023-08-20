@@ -1,5 +1,6 @@
 # 实体层
 # 对应数据库
+import hashlib  # 哈希库
 from django.db import models
 from django.utils import timezone
 from django.contrib import admin
@@ -166,6 +167,12 @@ class Comment(models.Model):
             return self.author
         else:
             return "empty field"
+
+    def get_gravatar(self, size=80):
+        email_hash = hashlib.md5(
+            self.author_email.lower().encode('utf-8')).hexdigest()
+        gravatar_url = f"https://cdn.v2ex.com/gravatar/{email_hash}?s={size}&d=identicon"
+        return gravatar_url
 
     class Meta:
         db_table = "comments"  # 数据库表名
